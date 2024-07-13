@@ -1,0 +1,25 @@
+name = "Fire Mage Analyzer"
+packages = [
+    "asyncio",
+    "json5",
+    "pandas",
+    "panel==1.3.8",
+    # "panel",
+    # "https://cdn.holoviz.org/panel/1.4.4/dist/wheels/bokeh-3.4.1-py3-none-any.whl",
+    # "https://cdn.holoviz.org/panel/1.4.4/dist/wheels/panel-1.4.4-py3-none-any.whl",
+    "numpy"
+]
+[files]
+"./utils/wcl/PixolWCLClient.py"                                 = "./utils/wcl/PixolWCLClient.py"
+"./utils/wcl/PixolWCLReport.py"                                 = "./utils/wcl/PixolWCLReport.py"
+"./utils/highcharts/PixolHighcharts.py"                         = "./utils/highcharts/PixolHighcharts.py"
+"./utils/analyzers/PixolClassAnalyzerGraph.py"                  = "./utils/analyzers/PixolClassAnalyzerGraph.py"
+"./utils/analyzers/PixolClassAnalyzerBase.py"                   = "./utils/analyzers/PixolClassAnalyzerBase.py"
+"./utils/analyzers/MageFire/PixolClassAnalyzerGraphMageFire.py" = "./utils/analyzers/MageFire/PixolClassAnalyzerGraphMageFire.py"
+"./utils/analyzers/MageFire/PixolClassAnalyzerMageFire.py"      = "./utils/analyzers/MageFire/PixolClassAnalyzerMageFire.py"
+"./utils/analyzers/MageFire/CombustionEstimator.py"             = "./utils/analyzers/MageFire/CombustionEstimator.py"
+"./utils/analyzers/MageFire/MasteryIgniteEstimator.py"          = "./utils/analyzers/MageFire/MasteryIgniteEstimator.py"
+"./utils/misc.py"                                               = "./utils/misc.py"
+"./utils/js/highchartssetup.js"                                 = "./utils/js/highchartssetup.js"
+"./utils/js/querySelectorAllShadows.js"                         = "./utils/js/querySelectorAllShadows.js"
+"./utils/js/highcharts-dark-unica.js"                           = "./utils/js/highcharts-dark-unica.js"

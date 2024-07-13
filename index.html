@@ -1,0 +1,99 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Cata Fire Mage Analyzer</title>
+
+        <!-- for splashscreen -->
+        <style>
+            #loading { color: #FFFFFF; outline: none; border: none; background: transparent }
+            body {background-color: #141414;}
+        </style>
+
+        <script type="module">
+            const loading = document.getElementById('loading');
+            addEventListener('py:ready', () => loading.close());
+            loading.showModal();
+        </script>
+
+        <!-- PyScript -->
+        <link rel="stylesheet" href="https://pyscript.net/releases/2024.5.2/core.css">
+        <script type="module" src="https://pyscript.net/releases/2024.5.2/core.js"></script>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+        <!-- panel Tables -->
+        <!-- <link href="https://unpkg.com/tabulator-tables@5.6.1/dist/css/tabulator.min.css" rel="stylesheet"> -->
+        <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.6.1/dist/js/tabulator.min.js"></script>
+
+        <!-- panel CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/bundled/theme/default.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/bundled/theme/material_variables.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/bundled/theme/material.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/css/loading.css" type="text/css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/css/listpanel.css" type="text/css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/css/select.css" type="text/css"/>
+
+        <!-- panel scripts -->
+        <script defer src="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/panel.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.4.1/dist/bundled/material-components-web@7.0.0/dist/material-components-web.min.js"></script>
+
+        <!-- bokeh scripts (required for panel python lib) -->
+        <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.4.0.js"></script>
+        <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.4.0.min.js"></script>
+        <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.4.0.min.js"></script>
+
+        <!-- Highcharts Scripts -->
+        <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
+        <!-- 11.3 broke click-drag zooming, 11.4 broke plotband html labels -->
+        <!-- <script src="https://code.highcharts.com/11.2.0/highcharts.js"></script> -->
+        <script src="https://code.highcharts.com/stock/11.2.0/highstock.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+        <!-- Wowhead Tooltips -->
+        <script>const whTooltips = {colorLinks: false, iconizeLinks: false, renameLinks: false};</script>
+        <script src="https://wow.zamimg.com/js/tooltips.js"></script>
+
+        <!-- Custom scripts -->
+        <script src="./utils/js/highcharts-dark-unica.js"></script>
+        <script src="./utils/js/querySelectorAllShadows.js"></script>
+        <script src="./utils/js/highchartssetup.js"></script>
+    </head>
+
+    <body>
+        <dialog id="loading">
+            <h1>Loading...</h1>
+        </dialog>
+
+        <style>
+            div {
+                width: 90%; width: 90vw;
+                max-width: 2100px;
+                margin: auto;
+            }
+        </style>
+
+
+        <section class="pyscript">
+            <div id="panel" class="panel"></div>
+            <div id="panel2" class="panel"></div>
+            <div id="panel3" class="panel"></div>
+            <div id="panel4" class="panel"></div>
+            <div id="destroyAllHighcharts"></div>
+            <script type="py" src="./index.py" config="./pyscript.toml"></script>
+        </section>
+        <script>
+            ['mousemove', 'touchmove', 'touchstart'].forEach(function (eventType) {
+            document.getElementById('panel2').addEventListener(
+                eventType,
+                highcharts_cursor_sync
+            );
+        });
+        </script>
+    </body>
+</html>
