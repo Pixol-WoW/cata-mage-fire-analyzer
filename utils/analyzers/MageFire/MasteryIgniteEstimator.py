@@ -416,7 +416,7 @@ class igniteEstimatorClass:
             self.tsRemoved = -1e6
             self.tsBufferUpdated = -1e6
             self.tsBufferAbsorbUpdated = -1e6
-            self.tsThres = 0.1
+            self.tsThres = 0.125
 
         def clearOldBuffers(self, ts):
             if (ts - self.tsBufferUpdated) > self.tsThres:

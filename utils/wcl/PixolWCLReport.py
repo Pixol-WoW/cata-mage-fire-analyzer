@@ -24,11 +24,16 @@ class WCLReportMetaData:
         else:
             self.encounters = self.fights[self.fights['encounterID']>0]
 
+            # Include all fights as encounter if no encounters found (for training dummy logs)
+            if len(self.encounters) == 0:
+                self.encounters = self.fights
+
         # format encounter name with start time, duration, and wipe number or kill
         self.encounters.insert(2,'wipeCounter', self.encounters.groupby(['name','kill']).cumcount()+1)
         try:
             self.encounters.insert(2,'formattedName', self._get_formatted_encounter_strings())
         except:
+            self.encounters.insert(2,'formattedName',None)
             pass
 
         # offset phase transition timestamps
@@ -50,10 +55,18 @@ class WCLReportMetaData:
 
         try:
             self.dps = pd.DataFrame(metadata['playerDetails']['data']['playerDetails']['dps'])
+        except:
+            self.dps = pd.DataFrame(columns=['name','id','guid','type','server','icon','specs','minItemLevel','maxItemLevel','potionUse','healthstoneUse','combatantInfo'])
+
+        try:
             self.healers = pd.DataFrame(metadata['playerDetails']['data']['playerDetails']['healers'])
+        except:
+            self.healers = pd.DataFrame(columns=['name','id','guid','type','server','icon','specs','minItemLevel','maxItemLevel','potionUse','healthstoneUse','combatantInfo'])
+
+        try:
             self.tanks = pd.DataFrame(metadata['playerDetails']['data']['playerDetails']['tanks'])
         except:
-            pass
+            self.tanks = pd.DataFrame(columns=['name','id','guid','type','server','icon','specs','minItemLevel','maxItemLevel','potionUse','healthstoneUse','combatantInfo'])
 
         self.df_mage_fire = self._get_class_spec('Mage', 'Fire')
 
@@ -62,7 +75,7 @@ class WCLReportMetaData:
         def filter_class_spec(_d, _c, _s):
             if _d['type'] == _c:
                 for spec in _d['specs']:
-                    if spec['spec'] == _s:
+                    if ('spec' in spec) and (spec['spec'] == _s):
                         return True
             return False
         return pd.concat([role[role.apply(lambda x: filter_class_spec(x, c, s),axis=1)] for role in [self.dps, self.healers, self.tanks]])
@@ -125,7 +138,8 @@ class WCLReportFightData:
         self._create_target_name_columns('source')
         self._create_target_name_columns('target')
 
-        self.events["sourceNameInstanceUnique"] = self.events["sourceNameInstanceUnique"].fillna("Environment")
+        if 'sourceNameInstanceUnique' in self.events.columns:
+            self.events["sourceNameInstanceUnique"] = self.events["sourceNameInstanceUnique"].fillna("Environment")
 
     def _add_is_absorb_full_column(self):
         if 'amount' not in self.events.columns:

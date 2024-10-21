@@ -249,18 +249,26 @@ class PixolGraphBase:
 
     def generate_plot_lines(self):
         if self.config['type'] == 'area':
+            row_spacing = 0.1
             if self.data_type in ['enemy_health','mana','ignite_storage','ignite_tick_estimate']:
                 y_val_min = 0
-                row_spacing = 0.1
                 y_val_norm_min = self.config['row_span'] * (1-row_spacing*2/self.config['row_span']) + row_spacing + self.config['row_num']
             else:
-                idx_min = self.df_poly['y_val'].argmin()
-                y_val_min = self.df_poly.iloc[idx_min]['y_val']
-                y_val_norm_min = self.df_poly.iloc[idx_min]['y_val_norm']
+                try:
+                    idx_min = self.df_poly['y_val'].argmin()
+                    y_val_min = self.df_poly.iloc[idx_min]['y_val']
+                    y_val_norm_min = self.df_poly.iloc[idx_min]['y_val_norm']
+                except:
+                    y_val_min = 0
+                    y_val_norm_min = self.config['row_span'] * (1-row_spacing*2/self.config['row_span']) + row_spacing + self.config['row_num']
 
-            idx_max = self.df_poly['y_val'].argmax()
-            y_val_max = self.config.get('y_val_max') or self.df_poly.iloc[idx_max]['y_val']
-            y_val_norm_max = self.config.get('y_val_norm_max') or self.df_poly.iloc[idx_max]['y_val_norm']
+            try:
+                idx_max = self.df_poly['y_val'].argmax()
+            except:
+                idx_max = None
+                pass
+            y_val_max = self.config.get('y_val_max') or (idx_max and self.df_poly.iloc[idx_max]['y_val']) or 1
+            y_val_norm_max = self.config.get('y_val_norm_max') or (idx_max and self.df_poly.iloc[idx_max]['y_val_norm']) or 1
             self.plot_lines = [
                 {
                     # 'color': "rgba(255, 255, 255, 0.5)",

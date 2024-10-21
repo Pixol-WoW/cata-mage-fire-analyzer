@@ -406,9 +406,9 @@ class PixolClassAnalyzerMageFire(PixolClassAnalyzerBase):
         self.df_player.loc[get_idx_from_bool_series(mask)[match_index>=0], 'm-masteryEstimate'] = self.df_mastery.loc[match_index[match_index>=0],'mastery'].values
 
     def add_ignite_data(self):
-        df_ignite_estimates = igniteEstimatorClass(self.masteryEstimatorObj.df, enableDebug=True).estimateIgnites()
-        idx_ignite_tick_estimates = get_idx_from_bool_series(df_ignite_estimates['i-TickAmount'].notna())
-        self.df_player.loc[idx_ignite_tick_estimates,"i-TickAmount"] = df_ignite_estimates['i-TickAmount']
+        self.df_ignite_estimates = igniteEstimatorClass(self.masteryEstimatorObj.df, enableDebug=True).estimateIgnites()
+        idx_ignite_tick_estimates = get_idx_from_bool_series(self.df_ignite_estimates['i-TickAmount'].notna())
+        self.df_player.loc[idx_ignite_tick_estimates,"i-TickAmount"] = self.df_ignite_estimates['i-TickAmount']
         
     def generate_panel_to_div(self, target_div):
         tabs_graphs = self.generate_panel_graphs(chart_height_offset_debuffs=40)
